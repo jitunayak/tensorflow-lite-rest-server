@@ -32,7 +32,17 @@ def info():
     info_str = "Flask app exposing tensorflow lite model: {} \n".format(
         MODEL.split("/")[-1]
     )
+    app.logger.info("Received request for app info")
     return info_str
+
+
+@app.route("/labels")
+def root():
+    app.logger.info("Received request for labels")
+    with open(LABELS, "r") as myfile:
+        data = myfile.readlines()
+    labels_str = " ".join([x.split()[-1] for x in data])
+    return labels_str
 
 
 @app.route(OBJ_DETECTION_URL, methods=["POST"])
